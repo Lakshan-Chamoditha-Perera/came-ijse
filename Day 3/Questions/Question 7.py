@@ -9,7 +9,7 @@ while attempt <= max_attempts and attempt <= len(attempt_results):
     print(f"Attempt {attempt}: accuracy = {attempt_results[attempt-1]}")
 
     if attempt_results[attempt-1] >= threshold:
-        print(f"Training Succeeded : {attempt_results[attempt-1]}")
+        print(f"Training Succeeded! Accuracy: {attempt_results[attempt-1]}")
         break
     
     attempt += 1
