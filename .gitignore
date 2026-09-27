@@ -5,3 +5,8 @@
 /httpRequests/
 
 .idea
+
+# MLflow tracking data
+mlflow.db
+mlruns/
+mlartifacts/
