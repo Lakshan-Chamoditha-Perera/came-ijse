@@ -1,0 +1,9 @@
+{
+  "python.defaultInterpreterPath": "C:\\Users\\laksh\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+  "python.terminal.activateEnvironment": true,
+  "code-runner.runInTerminal": true,
+  "code-runner.executorMap": {
+    "python": "py -u"
+  },
+  "python-envs.defaultEnvManager": "ms-python.python:system"
+}
