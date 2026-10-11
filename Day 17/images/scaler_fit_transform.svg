@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="384" viewBox="0 0 900 384" role="img" aria-labelledby="t d">
+<title id="t">StandardScaler fit versus transform</title>
+<desc id="d">X_train goes into step 1, fit, which makes the scaler learn one mean and one standard deviation per column: mean_ = [0.0488, -0.5433, 0.5057], scale_ = [1.1732, 1.2706, 1.2674]. Step 2, transform, then rescales X_train, X_val and X_test with those same numbers into X_train_scaled, X_val_scaled and X_test_scaled. fit_transform(X_train) does both steps in one call. Calling fit_transform on X_val or X_test is marked as wrong: it re-learns the numbers from data the model must never see (data leakage) and scales each set by a different rule.</desc>
+<style>
+  svg {
+    --surface: #fcfcfb; --border: rgba(11,11,11,0.10); --line: #e1e0d9;
+    --ink-1: #0b0b0b; --ink-2: #52514e; --ink-3: #898781;
+    --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a;
+    --s1-wash: rgba(42,120,214,0.12); --s2-wash: rgba(235,104,52,0.14); --s3-wash: rgba(27,175,122,0.14);
+    --no: #d03b3b; --no-wash: rgba(208,59,59,0.08);
+  }
+  @media (prefers-color-scheme: dark) {
+    svg {
+      --surface: #1a1a19; --border: rgba(255,255,255,0.10); --line: #33332f;
+      --ink-1: #ffffff; --ink-2: #c3c2b7; --ink-3: #898781;
+      --s1: #3987e5; --s2: #d95926; --s3: #199e70;
+      --s1-wash: rgba(57,135,229,0.24); --s2-wash: rgba(217,89,38,0.26); --s3-wash: rgba(25,158,112,0.26);
+      --no: #e66767; --no-wash: rgba(230,103,103,0.12);
+    }
+  }
+  text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .bg { fill: var(--surface); stroke: var(--border); stroke-width: 1; }
+  .title { font-size: 19px; font-weight: 600; fill: var(--ink-1); }
+  .h { font-size: 14px; font-weight: 600; fill: var(--ink-1); }
+  .s { font-size: 13px; fill: var(--ink-2); }
+  .m { font-size: 12px; fill: var(--ink-3); }
+  .k { font-size: 12.5px; fill: var(--ink-2); }
+  .code { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 12.5px; fill: var(--ink-1); }
+  .codeb { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 12.5px; font-weight: 700; fill: var(--ink-1); }
+  .card { fill: var(--surface); stroke: var(--line); stroke-width: 1; }
+  .w1 { fill: var(--s1-wash); } .w2 { fill: var(--s2-wash); } .w3 { fill: var(--s3-wash); }
+  .e1 { fill: var(--s1); } .e2 { fill: var(--s2); } .e3 { fill: var(--s3); }
+  .arrow { fill: none; stroke: var(--ink-3); stroke-width: 1.5; }
+  .arrowhead { fill: var(--ink-3); }
+  .nocard { fill: var(--no-wash); stroke: var(--no); stroke-opacity: 0.5; stroke-width: 1; }
+  .no { fill: var(--no); font-weight: 700; font-size: 14px; }
+  .step { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 15px; font-weight: 400; }
+</style>
+<rect class="bg" x="0.5" y="0.5" width="899" height="383" rx="12"/>
+<text class="title" x="32" y="44" text-anchor="start">StandardScaler: fit once on the training set, transform every set</text><text class="s" x="32" y="67" text-anchor="start">fit learns each column's mean and std · transform applies (x − mean) / std using those same numbers</text><rect class="card" x="32" y="140" width="170" height="80" rx="8"/><rect class="w1" x="32" y="140" width="170" height="80" rx="8"/><rect class="e1" x="32" y="148" width="4" height="64" rx="2"/><text class="codeb" x="117" y="176" text-anchor="middle">X_train</text><text class="m" x="117" y="196" text-anchor="middle">700 customers</text><text class="codeb" x="244" y="170" text-anchor="middle"><tspan class="step">①</tspan> fit</text><line class="arrow" x1="206" y1="180" x2="277" y2="180"/><path class="arrowhead" d="M284 180 l-8 -4.5 v9 z"/><text class="m" x="244" y="200" text-anchor="middle">learns</text><rect class="card" x="288" y="105" width="278" height="150" rx="8"/><rect class="w3" x="288" y="105" width="278" height="150" rx="8"/><rect class="e3" x="288" y="113" width="4" height="134" rx="2"/><text class="h" x="427" y="133" text-anchor="middle">scaler</text><text class="m" x="427" y="152" text-anchor="middle">learned from X_train only, one value per column</text><text class="code" x="310" y="186" text-anchor="start">mean_  = [0.0488, -0.5433, 0.5057]</text><text class="code" x="310" y="210" text-anchor="start">scale_ = [1.1732, 1.2706, 1.2674]</text><text class="m" x="427" y="238" text-anchor="middle">(scale_ is the standard deviation)</text><text class="codeb" x="608" y="98" text-anchor="middle"><tspan class="step">②</tspan> transform</text><line class="arrow" x1="570" y1="128" x2="639" y2="128"/><path class="arrowhead" d="M646 128 l-8 -4.5 v9 z"/><rect class="card" x="650" y="109" width="218" height="38" rx="8"/><rect class="w1" x="650" y="109" width="218" height="38" rx="8"/><rect class="e1" x="650" y="117" width="4" height="22" rx="2"/><text class="code" x="761" y="132" text-anchor="middle">X_train → X_train_scaled</text><line class="arrow" x1="570" y1="180" x2="639" y2="180"/><path class="arrowhead" d="M646 180 l-8 -4.5 v9 z"/><rect class="card" x="650" y="161" width="218" height="38" rx="8"/><rect class="w2" x="650" y="161" width="218" height="38" rx="8"/><rect class="e2" x="650" y="169" width="4" height="22" rx="2"/><text class="code" x="761" y="184" text-anchor="middle">X_val → X_val_scaled</text><line class="arrow" x1="570" y1="232" x2="639" y2="232"/><path class="arrowhead" d="M646 232 l-8 -4.5 v9 z"/><rect class="card" x="650" y="213" width="218" height="38" rx="8"/><rect class="w2" x="650" y="213" width="218" height="38" rx="8"/><rect class="e2" x="650" y="221" width="4" height="22" rx="2"/><text class="code" x="761" y="236" text-anchor="middle">X_test → X_test_scaled</text><text class="s" x="32" y="292" text-anchor="start">fit_transform(X_train) does ① and ② in one call.  X_val and X_test only get ② transform, with the training numbers.</text><rect class="nocard" x="24" y="310" width="852" height="56" rx="10"/><text class="no" x="42" y="333" text-anchor="start">✗</text><text class="codeb" x="62" y="333" text-anchor="start">scaler.fit_transform(X_val)  /  scaler.fit_transform(X_test)</text><text class="k" x="62" y="353" text-anchor="start">Re-learns mean and std from data the model must never see (data leakage), and scales each set by a different rule.</text>
+</svg>
