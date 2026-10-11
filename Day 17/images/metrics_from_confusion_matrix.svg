@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="530" viewBox="0 0 900 530" role="img" aria-labelledby="t d">
+<title id="t">Accuracy, precision and recall read from the confusion matrix</title>
+<desc id="d">Three copies of the test-set confusion matrix: TN 73, FP 2, FN 9, TP 66. Accuracy uses the diagonal out of everyone: (73 + 66) divided by 150 = 0.927. Precision for class 1, will buy, reads down the predicted-1 column: 66 divided by (66 + 2) = 0.971, so of the 68 customers called buyers, 66 really were. Recall for class 1 reads along the true-1 row: 66 divided by (66 + 9) = 0.880, so of the 75 real buyers the model found 66 and missed 9. Class 0 uses its own column and row: precision 73 / 82 = 0.890, recall 73 / 75 = 0.973. F1-score is 0.923 for will buy and 0.930 for will not buy.</desc>
+<style>
+  svg {
+    --surface: #fcfcfb; --border: rgba(11,11,11,0.10); --line: #e1e0d9; --grid: #eeede8;
+    --ink-1: #0b0b0b; --ink-2: #52514e; --ink-3: #898781;
+    --solid: #2a78d6; --on-solid: #ffffff; --tint: #cde2fb;
+  }
+  @media (prefers-color-scheme: dark) {
+    svg {
+      --surface: #1a1a19; --border: rgba(255,255,255,0.10); --line: #33332f; --grid: #2a2a27;
+      --ink-1: #ffffff; --ink-2: #c3c2b7; --ink-3: #898781;
+      --solid: #3987e5; --on-solid: #ffffff; --tint: #1d3a5f;
+    }
+  }
+  text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .bg { fill: var(--surface); stroke: var(--border); stroke-width: 1; }
+  .panel { fill: none; stroke: var(--line); stroke-width: 1; }
+  .title { font-size: 19px; font-weight: 600; fill: var(--ink-1); }
+  .h { font-size: 15px; font-weight: 600; fill: var(--ink-1); }
+  .s { font-size: 13px; fill: var(--ink-2); }
+  .m { font-size: 12px; fill: var(--ink-3); }
+  .f { font-size: 13px; fill: var(--ink-2); }
+  .r { font-size: 16px; font-weight: 600; fill: var(--ink-1); }
+  .c-solid { fill: var(--solid); }
+  .c-tint { fill: var(--tint); }
+  .c-off { fill: var(--grid); }
+  .n-solid { font-size: 22px; font-weight: 700; fill: var(--on-solid); }
+  .n-tint { font-size: 22px; font-weight: 700; fill: var(--ink-1); }
+  .n-off { font-size: 22px; font-weight: 700; fill: var(--ink-3); }
+  .k-solid { font-size: 11px; fill: var(--on-solid); }
+  .k-tint { font-size: 11px; fill: var(--ink-1); }
+  .k-off { font-size: 11px; fill: var(--ink-3); }
+</style>
+<rect class="bg" x="0.5" y="0.5" width="899" height="529" rx="12"/>
+<text class="title" x="32" y="44">Accuracy, precision and recall: three ways to read the confusion matrix</text>
+<text class="s" x="32" y="68">Test set, 150 customers. Rows = true label, columns = predicted label. Precision and recall shown for class 1, "will buy".</text>
+
+<!-- Panel 1: accuracy (x = 24) -->
+<rect class="panel" x="24" y="92" width="276" height="340" rx="10"/>
+<text class="h" x="42" y="122">Accuracy</text>
+<text class="s" x="42" y="142">the diagonal, out of everyone</text>
+<text class="m" x="152" y="172" text-anchor="middle">predicted 0</text>
+<text class="m" x="240" y="172" text-anchor="middle">predicted 1</text>
+<text class="m" x="102" y="215" text-anchor="end">true 0</text>
+<text class="m" x="102" y="281" text-anchor="end">true 1</text>
+<rect class="c-solid" x="110" y="180" width="84" height="62" rx="4"/>
+<text class="n-solid" x="152" y="212" text-anchor="middle">73</text><text class="k-solid" x="152" y="232" text-anchor="middle">TN</text>
+<rect class="c-tint" x="198" y="180" width="84" height="62" rx="4"/>
+<text class="n-tint" x="240" y="212" text-anchor="middle">2</text><text class="k-tint" x="240" y="232" text-anchor="middle">FP</text>
+<rect class="c-tint" x="110" y="246" width="84" height="62" rx="4"/>
+<text class="n-tint" x="152" y="278" text-anchor="middle">9</text><text class="k-tint" x="152" y="298" text-anchor="middle">FN</text>
+<rect class="c-solid" x="198" y="246" width="84" height="62" rx="4"/>
+<text class="n-solid" x="240" y="278" text-anchor="middle">66</text><text class="k-solid" x="240" y="298" text-anchor="middle">TP</text>
+<text class="f" x="42" y="342">(TN + TP) ÷ (TN + FP + FN + TP)</text>
+<text class="r" x="42" y="368">(73 + 66) ÷ 150 = 0.927</text>
+<text class="s" x="42" y="396">139 of the 150 customers</text>
+<text class="s" x="42" y="414">were predicted correctly.</text>
+
+<!-- Panel 2: precision for class 1 (x = 312) -->
+<rect class="panel" x="312" y="92" width="276" height="340" rx="10"/>
+<text class="h" x="330" y="122">Precision (will buy)</text>
+<text class="s" x="330" y="142">down the "predicted 1" column</text>
+<text class="m" x="440" y="172" text-anchor="middle">predicted 0</text>
+<text class="m" x="528" y="172" text-anchor="middle">predicted 1</text>
+<text class="m" x="390" y="215" text-anchor="end">true 0</text>
+<text class="m" x="390" y="281" text-anchor="end">true 1</text>
+<rect class="c-off" x="398" y="180" width="84" height="62" rx="4"/>
+<text class="n-off" x="440" y="212" text-anchor="middle">73</text><text class="k-off" x="440" y="232" text-anchor="middle">TN</text>
+<rect class="c-tint" x="486" y="180" width="84" height="62" rx="4"/>
+<text class="n-tint" x="528" y="212" text-anchor="middle">2</text><text class="k-tint" x="528" y="232" text-anchor="middle">FP</text>
+<rect class="c-off" x="398" y="246" width="84" height="62" rx="4"/>
+<text class="n-off" x="440" y="278" text-anchor="middle">9</text><text class="k-off" x="440" y="298" text-anchor="middle">FN</text>
+<rect class="c-solid" x="486" y="246" width="84" height="62" rx="4"/>
+<text class="n-solid" x="528" y="278" text-anchor="middle">66</text><text class="k-solid" x="528" y="298" text-anchor="middle">TP</text>
+<text class="f" x="330" y="342">TP ÷ (TP + FP)</text>
+<text class="r" x="330" y="368">66 ÷ (66 + 2) = 0.971</text>
+<text class="s" x="330" y="396">Of the 68 customers called buyers,</text>
+<text class="s" x="330" y="414">66 really were buyers.</text>
+
+<!-- Panel 3: recall for class 1 (x = 600) -->
+<rect class="panel" x="600" y="92" width="276" height="340" rx="10"/>
+<text class="h" x="618" y="122">Recall (will buy)</text>
+<text class="s" x="618" y="142">along the "true 1" row</text>
+<text class="m" x="728" y="172" text-anchor="middle">predicted 0</text>
+<text class="m" x="816" y="172" text-anchor="middle">predicted 1</text>
+<text class="m" x="678" y="215" text-anchor="end">true 0</text>
+<text class="m" x="678" y="281" text-anchor="end">true 1</text>
+<rect class="c-off" x="686" y="180" width="84" height="62" rx="4"/>
+<text class="n-off" x="728" y="212" text-anchor="middle">73</text><text class="k-off" x="728" y="232" text-anchor="middle">TN</text>
+<rect class="c-off" x="774" y="180" width="84" height="62" rx="4"/>
+<text class="n-off" x="816" y="212" text-anchor="middle">2</text><text class="k-off" x="816" y="232" text-anchor="middle">FP</text>
+<rect class="c-tint" x="686" y="246" width="84" height="62" rx="4"/>
+<text class="n-tint" x="728" y="278" text-anchor="middle">9</text><text class="k-tint" x="728" y="298" text-anchor="middle">FN</text>
+<rect class="c-solid" x="774" y="246" width="84" height="62" rx="4"/>
+<text class="n-solid" x="816" y="278" text-anchor="middle">66</text><text class="k-solid" x="816" y="298" text-anchor="middle">TP</text>
+<text class="f" x="618" y="342">TP ÷ (TP + FN)</text>
+<text class="r" x="618" y="368">66 ÷ (66 + 9) = 0.880</text>
+<text class="s" x="618" y="396">Of the 75 real buyers, the model</text>
+<text class="s" x="618" y="414">found 66 and missed 9.</text>
+
+<!-- Key and class-0 / F1 footnotes -->
+<rect class="c-solid" x="32" y="451" width="14" height="14" rx="3"/>
+<text class="s" x="54" y="463">counted on top of the fraction</text>
+<rect class="c-tint" x="262" y="451" width="14" height="14" rx="3"/>
+<text class="s" x="284" y="463">also counted below it</text>
+<rect class="c-off" x="440" y="451" width="14" height="14" rx="3"/>
+<text class="s" x="462" y="463">not used</text>
+<text class="s" x="32" y="490">Class 0 ("will not buy") uses its own column and row: precision 73 ÷ 82 = 0.890, recall 73 ÷ 75 = 0.973.</text>
+<text class="s" x="32" y="512">F1-score = 2 × precision × recall ÷ (precision + recall): 0.923 for "will buy", 0.930 for "will not buy".</text>
+</svg>

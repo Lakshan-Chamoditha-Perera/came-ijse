@@ -1,0 +1,172 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="696" viewBox="0 0 900 696" role="img" aria-labelledby="t d">
+<title id="t">Day 17 roadmap: training a neural network with PyTorch (Part 2 highlighted)</title>
+<desc id="d">Roadmap of Day 17 in two parts. Part 2, training the network, is highlighted; the other part is faded. Part 1, Notebook.ipynb, builds the network in three stages: stage 1, set up, section 1 to 2, install PyTorch and check the version and device; stage 2, build, section 3, define the network with nn.Module, 3 to 8 to 1 with a ReLU hidden layer; stage 3, look inside, section 4, tensors, the network's float32 input with shape (1, 3); section 5, parameters, 41 weights and biases learned in training; section 6, run the network, model(x) calls forward() and returns 1 raw score. Part 2, Training_Pipeline.ipynb, trains it in five stages: stage 1, prepare the data, sections 1 to 6: libraries; create 1000 customers with 3 features and a label 0 or 1; split into train 700, validation 150 and test 150; scale, fit on train only; convert to float32 tensors, features (700, 3) and labels (700, 1); 22 shuffled mini-batches of 32 rows. Stage 2, set up, section 7, the model CustomerPredictor with 41 parameters, and section 8, loss BCEWithLogitsLoss and optimiser AdamW with learning rate 0.001. Stage 3, train, section 9, 50 epochs and 1100 weight updates, best validation loss 0.147. Stage 4, evaluate, section 10, 150 test customers, accuracy 92.7%, confusion matrix. Stage 5, use, section 11, predict for a new customer: probability 0.9987, will buy.</desc>
+<style>
+  svg {
+    --surface: #fcfcfb; --border: rgba(11,11,11,0.10); --line: #e1e0d9;
+    --ink-1: #0b0b0b; --ink-2: #52514e; --ink-3: #898781;
+    --s1: #2a78d6; --s1-wash: rgba(42,120,214,0.12);
+    --s2: #eb6834; --s2-wash: rgba(235,104,52,0.14);
+  }
+  @media (prefers-color-scheme: dark) {
+    svg {
+      --surface: #1a1a19; --border: rgba(255,255,255,0.10); --line: #33332f;
+      --ink-1: #ffffff; --ink-2: #c3c2b7; --ink-3: #898781;
+      --s1: #3987e5; --s1-wash: rgba(57,135,229,0.24);
+      --s2: #d95926; --s2-wash: rgba(217,89,38,0.26);
+    }
+  }
+  text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .bg { fill: var(--surface); stroke: var(--border); stroke-width: 1; }
+  .panel { fill: none; stroke: var(--line); stroke-width: 1; }
+  .title { font-size: 19px; font-weight: 600; fill: var(--ink-1); }
+  .s { font-size: 13px; fill: var(--ink-2); }
+  .h { font-size: 13.5px; font-weight: 600; fill: var(--ink-1); }
+  .k { font-size: 12px; fill: var(--ink-2); }
+  .code { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 11.5px; fill: var(--ink-1); }
+  .file { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 12px; fill: var(--ink-3); }
+  .lane { font-size: 12.5px; font-weight: 700; letter-spacing: 0.04em; }
+  .lane1, .stage1 { fill: var(--s1); } .lane2, .stage2 { fill: var(--s2); }
+  .stage { font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; }
+  .card { stroke: var(--line); stroke-width: 1; }
+  .w1 { fill: var(--s1-wash); } .w2 { fill: var(--s2-wash); }
+  .dot1, .pill1 { fill: var(--s1); } .dot2, .pill2 { fill: var(--s2); }
+  .badge { fill: #ffffff; font-size: 11.5px; font-weight: 700; }
+  .here-text { fill: #ffffff; font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; }
+  .arrow { fill: none; stroke: var(--ink-3); stroke-width: 1.5; }
+  .head { fill: var(--ink-3); }
+</style>
+<rect class="bg" x="0.5" y="0.5" width="899" height="695" rx="12"/>
+<text class="title" x="32" y="44">Day 17 roadmap: training a neural network with PyTorch</text>
+<text class="s" x="32" y="68">Part 1 builds the network and looks inside it. Part 2 trains it, tests it and uses it for a new customer.</text>
+<g opacity="0.5">
+<rect class="panel" x="16" y="88" width="868" height="192" rx="12"/>
+<text class="lane lane1" x="32" y="114">PART 1 · BUILD THE NETWORK</text>
+<text class="file" x="868" y="114" text-anchor="end">Notebook.ipynb</text>
+<text class="stage stage1" x="104" y="140" text-anchor="middle">STAGE 1 · SET UP</text>
+<text class="stage stage1" x="277" y="140" text-anchor="middle">STAGE 2 · BUILD</text>
+<text class="stage stage1" x="623" y="140" text-anchor="middle">STAGE 3 · LOOK INSIDE</text>
+<rect class="card w1" x="29" y="150" width="150" height="112" rx="10"/>
+<rect class="pill1" x="86" y="161" width="36" height="22" rx="11"/><text class="badge" x="104" y="176" text-anchor="middle">1–2</text>
+<text class="h" x="104" y="202" text-anchor="middle">Set up PyTorch</text>
+<text class="code" x="104" y="222" text-anchor="middle">pip install torch</text>
+<text class="k" x="104" y="238" text-anchor="middle">check the version</text>
+<text class="k" x="104" y="254" text-anchor="middle">CPU or GPU?</text>
+<path class="arrow" d="M183 208 H193"/><path class="head" d="M198 208 l-6 -4 v8 z"/>
+<rect class="card w1" x="202" y="150" width="150" height="112" rx="10"/>
+<circle class="dot1" cx="277" cy="172" r="11"/><text class="badge" x="277" y="176" text-anchor="middle">3</text>
+<text class="h" x="277" y="202" text-anchor="middle">Define the network</text>
+<text class="code" x="277" y="222" text-anchor="middle">nn.Module</text>
+<text class="k" x="277" y="238" text-anchor="middle">3 → 8 → 1</text>
+<text class="k" x="277" y="254" text-anchor="middle">ReLU hidden layer</text>
+<path class="arrow" d="M356 208 H366"/><path class="head" d="M371 208 l-6 -4 v8 z"/>
+<rect class="card w1" x="375" y="150" width="150" height="112" rx="10"/>
+<circle class="dot1" cx="450" cy="172" r="11"/><text class="badge" x="450" y="176" text-anchor="middle">4</text>
+<text class="h" x="450" y="202" text-anchor="middle">Tensors</text>
+<text class="k" x="450" y="222" text-anchor="middle">the network's input</text>
+<text class="k" x="450" y="238" text-anchor="middle">float32 numbers</text>
+<text class="k" x="450" y="254" text-anchor="middle">shape (1, 3)</text>
+<path class="arrow" d="M529 208 H539"/><path class="head" d="M544 208 l-6 -4 v8 z"/>
+<rect class="card w1" x="548" y="150" width="150" height="112" rx="10"/>
+<circle class="dot1" cx="623" cy="172" r="11"/><text class="badge" x="623" y="176" text-anchor="middle">5</text>
+<text class="h" x="623" y="202" text-anchor="middle">Parameters</text>
+<text class="k" x="623" y="222" text-anchor="middle">weights + biases</text>
+<text class="k" x="623" y="238" text-anchor="middle">41 numbers</text>
+<text class="k" x="623" y="254" text-anchor="middle">learned in training</text>
+<path class="arrow" d="M702 208 H712"/><path class="head" d="M717 208 l-6 -4 v8 z"/>
+<rect class="card w1" x="721" y="150" width="150" height="112" rx="10"/>
+<circle class="dot1" cx="796" cy="172" r="11"/><text class="badge" x="796" y="176" text-anchor="middle">6</text>
+<text class="h" x="796" y="202" text-anchor="middle">Run the network</text>
+<text class="code" x="796" y="222" text-anchor="middle">model(x)</text>
+<text class="code" x="796" y="238" text-anchor="middle">→ forward()</text>
+<text class="k" x="796" y="254" text-anchor="middle">1 raw score (logit)</text>
+</g>
+<g >
+<rect class="panel" x="16" y="296" width="868" height="352" rx="12"/>
+<text class="lane lane2" x="32" y="322">PART 2 · TRAIN THE NETWORK, FROM DATA TO PREDICTIONS</text>
+<g class="here"><rect class="pill2" x="440" y="307" width="108" height="21" rx="10.5"/><text class="here-text" x="494" y="321.5" text-anchor="middle">YOU ARE HERE</text></g>
+<text class="file" x="868" y="322" text-anchor="end">Training_Pipeline.ipynb</text>
+<text class="stage stage2" x="450" y="348" text-anchor="middle">STAGE 1 · PREPARE THE DATA</text>
+<rect class="card w2" x="32" y="358" width="126" height="112" rx="10"/>
+<circle class="dot2" cx="95" cy="380" r="11"/><text class="badge" x="95" y="384" text-anchor="middle">1</text>
+<text class="h" x="95" y="410" text-anchor="middle">Libraries</text>
+<text class="k" x="95" y="430" text-anchor="middle">torch, nn, optim</text>
+<text class="k" x="95" y="446" text-anchor="middle">scikit-learn</text>
+<text class="k" x="95" y="462" text-anchor="middle">matplotlib</text>
+<path class="arrow" d="M162 416 H165"/><path class="head" d="M170 416 l-6 -4 v8 z"/>
+<rect class="card w2" x="174" y="358" width="126" height="112" rx="10"/>
+<circle class="dot2" cx="237" cy="380" r="11"/><text class="badge" x="237" y="384" text-anchor="middle">2</text>
+<text class="h" x="237" y="410" text-anchor="middle">Create</text>
+<text class="k" x="237" y="430" text-anchor="middle">1000 customers</text>
+<text class="k" x="237" y="446" text-anchor="middle">3 features each</text>
+<text class="k" x="237" y="462" text-anchor="middle">label 0 or 1</text>
+<path class="arrow" d="M304 416 H307"/><path class="head" d="M312 416 l-6 -4 v8 z"/>
+<rect class="card w2" x="316" y="358" width="126" height="112" rx="10"/>
+<circle class="dot2" cx="379" cy="380" r="11"/><text class="badge" x="379" y="384" text-anchor="middle">3</text>
+<text class="h" x="379" y="410" text-anchor="middle">Split</text>
+<text class="k" x="379" y="430" text-anchor="middle">train 700</text>
+<text class="k" x="379" y="446" text-anchor="middle">validation 150</text>
+<text class="k" x="379" y="462" text-anchor="middle">test 150</text>
+<path class="arrow" d="M446 416 H449"/><path class="head" d="M454 416 l-6 -4 v8 z"/>
+<rect class="card w2" x="458" y="358" width="126" height="112" rx="10"/>
+<circle class="dot2" cx="521" cy="380" r="11"/><text class="badge" x="521" y="384" text-anchor="middle">4</text>
+<text class="h" x="521" y="410" text-anchor="middle">Scale</text>
+<text class="k" x="521" y="430" text-anchor="middle">fit on train only</text>
+<text class="k" x="521" y="446" text-anchor="middle">transform all 3</text>
+<text class="k" x="521" y="462" text-anchor="middle">mean 0, std 1</text>
+<path class="arrow" d="M588 416 H591"/><path class="head" d="M596 416 l-6 -4 v8 z"/>
+<rect class="card w2" x="600" y="358" width="126" height="112" rx="10"/>
+<circle class="dot2" cx="663" cy="380" r="11"/><text class="badge" x="663" y="384" text-anchor="middle">5</text>
+<text class="h" x="663" y="410" text-anchor="middle">To tensors</text>
+<text class="k" x="663" y="430" text-anchor="middle">float32</text>
+<text class="k" x="663" y="446" text-anchor="middle">features (700, 3)</text>
+<text class="k" x="663" y="462" text-anchor="middle">labels (700, 1)</text>
+<path class="arrow" d="M730 416 H733"/><path class="head" d="M738 416 l-6 -4 v8 z"/>
+<rect class="card w2" x="742" y="358" width="126" height="112" rx="10"/>
+<circle class="dot2" cx="805" cy="380" r="11"/><text class="badge" x="805" y="384" text-anchor="middle">6</text>
+<text class="h" x="805" y="410" text-anchor="middle">Mini-batches</text>
+<text class="k" x="805" y="430" text-anchor="middle">22 batches</text>
+<text class="k" x="805" y="446" text-anchor="middle">of 32 rows</text>
+<text class="k" x="805" y="462" text-anchor="middle">shuffled</text>
+<path class="arrow" d="M805 474 V488 H104 V513"/><path class="head" d="M104 518 l-4 -6 h8 z"/>
+<text class="stage stage2" x="190.5" y="512" text-anchor="middle">STAGE 2 · SET UP</text>
+<text class="stage stage2" x="450" y="512" text-anchor="middle">STAGE 3 · TRAIN</text>
+<text class="stage stage2" x="623" y="512" text-anchor="middle">STAGE 4 · EVALUATE</text>
+<text class="stage stage2" x="796" y="512" text-anchor="middle">STAGE 5 · USE</text>
+<rect class="card w2" x="29" y="522" width="150" height="112" rx="10"/>
+<circle class="dot2" cx="104" cy="544" r="11"/><text class="badge" x="104" y="548" text-anchor="middle">7</text>
+<text class="h" x="104" y="574" text-anchor="middle">Model</text>
+<text class="code" x="104" y="594" text-anchor="middle">CustomerPredictor</text>
+<text class="k" x="104" y="610" text-anchor="middle">3 → 8 → 1</text>
+<text class="k" x="104" y="626" text-anchor="middle">41 parameters</text>
+<path class="arrow" d="M183 580 H193"/><path class="head" d="M198 580 l-6 -4 v8 z"/>
+<rect class="card w2" x="202" y="522" width="150" height="112" rx="10"/>
+<circle class="dot2" cx="277" cy="544" r="11"/><text class="badge" x="277" y="548" text-anchor="middle">8</text>
+<text class="h" x="277" y="574" text-anchor="middle">Loss + optimiser</text>
+<text class="code" x="277" y="594" text-anchor="middle">BCEWithLogitsLoss</text>
+<text class="code" x="277" y="610" text-anchor="middle">AdamW</text>
+<text class="k" x="277" y="626" text-anchor="middle">lr 0.001</text>
+<path class="arrow" d="M356 580 H366"/><path class="head" d="M371 580 l-6 -4 v8 z"/>
+<rect class="card w2" x="375" y="522" width="150" height="112" rx="10"/>
+<circle class="dot2" cx="450" cy="544" r="11"/><text class="badge" x="450" y="548" text-anchor="middle">9</text>
+<text class="h" x="450" y="574" text-anchor="middle">Train</text>
+<text class="k" x="450" y="594" text-anchor="middle">50 epochs</text>
+<text class="k" x="450" y="610" text-anchor="middle">1100 weight updates</text>
+<text class="k" x="450" y="626" text-anchor="middle">best val loss 0.147</text>
+<path class="arrow" d="M529 580 H539"/><path class="head" d="M544 580 l-6 -4 v8 z"/>
+<rect class="card w2" x="548" y="522" width="150" height="112" rx="10"/>
+<circle class="dot2" cx="623" cy="544" r="11"/><text class="badge" x="623" y="548" text-anchor="middle">10</text>
+<text class="h" x="623" y="574" text-anchor="middle">Evaluate</text>
+<text class="k" x="623" y="594" text-anchor="middle">150 test customers</text>
+<text class="k" x="623" y="610" text-anchor="middle">accuracy 92.7%</text>
+<text class="k" x="623" y="626" text-anchor="middle">confusion matrix</text>
+<path class="arrow" d="M702 580 H712"/><path class="head" d="M717 580 l-6 -4 v8 z"/>
+<rect class="card w2" x="721" y="522" width="150" height="112" rx="10"/>
+<circle class="dot2" cx="796" cy="544" r="11"/><text class="badge" x="796" y="548" text-anchor="middle">11</text>
+<text class="h" x="796" y="574" text-anchor="middle">Predict</text>
+<text class="k" x="796" y="594" text-anchor="middle">a new customer</text>
+<text class="k" x="796" y="610" text-anchor="middle">probability 0.9987</text>
+<text class="k" x="796" y="626" text-anchor="middle">→ will buy</text>
+</g>
+<text class="s" x="32" y="678">Numbered circles are the section numbers inside each notebook. The faded part is the other notebook.</text>
+</svg>
