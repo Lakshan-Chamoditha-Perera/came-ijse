@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="386" viewBox="0 0 900 386" role="img" aria-labelledby="t d">
+<title id="t">Matrix multiplication inside the hidden layer</title>
+<desc id="d">x, a 1 by 3 tensor with values 0.5, 1.0 and 2.0, is matrix-multiplied by W transpose, a 3 by 8 weight matrix, then the bias b with 8 values is added, giving z, a 1 by 8 tensor. The inner sizes, 3 and 3, must match. Neuron 1's value is z1 = 0.5 w11 + 1.0 w21 + 2.0 w31 + b1.</desc>
+<style>
+  svg {
+    --surface: #fcfcfb; --border: rgba(11,11,11,0.10); --line: #e1e0d9;
+    --ink-1: #0b0b0b; --ink-2: #52514e; --ink-3: #898781;
+    --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a;
+    --s1-wash: rgba(42,120,214,0.15); --s2-wash: rgba(235,104,52,0.17);
+  }
+  @media (prefers-color-scheme: dark) {
+    svg {
+      --surface: #1a1a19; --border: rgba(255,255,255,0.10); --line: #33332f;
+      --ink-1: #ffffff; --ink-2: #c3c2b7; --ink-3: #898781;
+      --s1: #3987e5; --s2: #d95926; --s3: #199e70;
+      --s1-wash: rgba(57,135,229,0.28); --s2-wash: rgba(217,89,38,0.30);
+    }
+  }
+  text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .bg { fill: var(--surface); stroke: var(--border); stroke-width: 1; }
+  .title { font-size: 19px; font-weight: 600; fill: var(--ink-1); }
+  .h { font-size: 14px; font-weight: 600; fill: var(--ink-1); }
+  .s { font-size: 13px; fill: var(--ink-2); }
+  .m { font-size: 12px; fill: var(--ink-3); }
+  .code { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 12.5px; fill: var(--ink-2); }
+  .op { font-size: 22px; fill: var(--ink-2); }
+  .card { fill: var(--surface); stroke: var(--line); stroke-width: 1; }
+  .backing { fill: var(--surface); }
+  .arrow { fill: none; stroke: var(--ink-3); stroke-width: 1.5; }
+  .arrowhead { fill: var(--ink-3); }
+  .c-s1 { fill: var(--s1); } .c-s1w { fill: var(--s1-wash); }
+  .c-s2 { fill: var(--s2); } .c-s2w { fill: var(--s2-wash); }
+  .c-s3 { fill: var(--s3); } .c-zero { fill: var(--line); }
+  .on-s1 { fill: #ffffff; } .on-s2, .on-s3 { fill: #0b0b0b; }
+  .t1 { fill: var(--ink-1); } .t3 { fill: var(--ink-3); }
+  .cell-text { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; }
+  .badge circle { fill: var(--ink-2); }
+  .badge text { fill: var(--surface); font-size: 11px; font-weight: 700; }
+</style>
+<rect class="bg" x="0.5" y="0.5" width="899" height="385" rx="12"/>
+<text class="title" x="32" y="44">Inside the hidden layer: z = x @ Wᵀ + b</text><text class="s" x="32" y="67">One matrix multiplication computes all 8 hidden neurons at once.</text><text class="h" x="71" y="128" text-anchor="middle">x (input)</text><text class="m" x="71" y="146" text-anchor="middle">3 features</text><text class="code" x="71" y="274" text-anchor="middle">(1, 3)</text><text class="h" x="255" y="128" text-anchor="middle">Wᵀ (weights)</text><text class="m" x="255" y="146" text-anchor="middle">1 column per neuron</text><text class="code" x="255" y="274" text-anchor="middle">(3, 8)</text><text class="h" x="509" y="128" text-anchor="middle">b (bias)</text><text class="m" x="509" y="146" text-anchor="middle">1 per neuron</text><text class="code" x="509" y="274" text-anchor="middle">(8,)</text><text class="h" x="763" y="128" text-anchor="middle">z (logits)</text><text class="m" x="763" y="146" text-anchor="middle">1 value per neuron</text><text class="code" x="763" y="274" text-anchor="middle">(1, 8)</text><rect class="c-s1" x="30" y="188" width="26" height="26" rx="3"/><text class="cell-text on-s1" x="43" y="205.0" text-anchor="middle" font-size="11">0.5</text><rect class="c-s1" x="58" y="188" width="26" height="26" rx="3"/><text class="cell-text on-s1" x="71" y="205.0" text-anchor="middle" font-size="11">1.0</text><rect class="c-s1" x="86" y="188" width="26" height="26" rx="3"/><text class="cell-text on-s1" x="99" y="205.0" text-anchor="middle" font-size="11">2.0</text><rect class="c-s2" x="144" y="160" width="26" height="26" rx="3"/><text class="cell-text on-s2" x="157" y="176.8" text-anchor="middle" font-size="10.5">w₁₁</text><rect class="c-s2w" x="172" y="160" width="26" height="26" rx="3"/><rect class="c-s2w" x="200" y="160" width="26" height="26" rx="3"/><rect class="c-s2w" x="228" y="160" width="26" height="26" rx="3"/><rect class="c-s2w" x="256" y="160" width="26" height="26" rx="3"/><rect class="c-s2w" x="284" y="160" width="26" height="26" rx="3"/><rect class="c-s2w" x="312" y="160" width="26" height="26" rx="3"/><rect class="c-s2w" x="340" y="160" width="26" height="26" rx="3"/><rect class="c-s2" x="144" y="188" width="26" height="26" rx="3"/><text class="cell-text on-s2" x="157" y="204.8" text-anchor="middle" font-size="10.5">w₂₁</text><rect class="c-s2w" x="172" y="188" width="26" height="26" rx="3"/><rect class="c-s2w" x="200" y="188" width="26" height="26" rx="3"/><rect class="c-s2w" x="228" y="188" width="26" height="26" rx="3"/><rect class="c-s2w" x="256" y="188" width="26" height="26" rx="3"/><rect class="c-s2w" x="284" y="188" width="26" height="26" rx="3"/><rect class="c-s2w" x="312" y="188" width="26" height="26" rx="3"/><rect class="c-s2w" x="340" y="188" width="26" height="26" rx="3"/><rect class="c-s2" x="144" y="216" width="26" height="26" rx="3"/><text class="cell-text on-s2" x="157" y="232.8" text-anchor="middle" font-size="10.5">w₃₁</text><rect class="c-s2w" x="172" y="216" width="26" height="26" rx="3"/><rect class="c-s2w" x="200" y="216" width="26" height="26" rx="3"/><rect class="c-s2w" x="228" y="216" width="26" height="26" rx="3"/><rect class="c-s2w" x="256" y="216" width="26" height="26" rx="3"/><rect class="c-s2w" x="284" y="216" width="26" height="26" rx="3"/><rect class="c-s2w" x="312" y="216" width="26" height="26" rx="3"/><rect class="c-s2w" x="340" y="216" width="26" height="26" rx="3"/><rect class="c-s2" x="398" y="188" width="26" height="26" rx="3"/><text class="cell-text on-s2" x="411" y="205.0" text-anchor="middle" font-size="11">b₁</text><rect class="c-s2" x="652" y="188" width="26" height="26" rx="3"/><text class="cell-text on-s2" x="665" y="205.0" text-anchor="middle" font-size="11">z₁</text><rect class="c-s2w" x="426" y="188" width="26" height="26" rx="3"/><rect class="c-s2w" x="680" y="188" width="26" height="26" rx="3"/><rect class="c-s2w" x="454" y="188" width="26" height="26" rx="3"/><rect class="c-s2w" x="708" y="188" width="26" height="26" rx="3"/><rect class="c-s2w" x="482" y="188" width="26" height="26" rx="3"/><rect class="c-s2w" x="736" y="188" width="26" height="26" rx="3"/><rect class="c-s2w" x="510" y="188" width="26" height="26" rx="3"/><rect class="c-s2w" x="764" y="188" width="26" height="26" rx="3"/><rect class="c-s2w" x="538" y="188" width="26" height="26" rx="3"/><rect class="c-s2w" x="792" y="188" width="26" height="26" rx="3"/><rect class="c-s2w" x="566" y="188" width="26" height="26" rx="3"/><rect class="c-s2w" x="820" y="188" width="26" height="26" rx="3"/><rect class="c-s2w" x="594" y="188" width="26" height="26" rx="3"/><rect class="c-s2w" x="848" y="188" width="26" height="26" rx="3"/><text class="op" x="128" y="209" text-anchor="middle">@</text><text class="op" x="382" y="209" text-anchor="middle">+</text><text class="op" x="636" y="209" text-anchor="middle">=</text><path class="arrow" d="M81.5 282 V292 H244.5 V282"/><text class="m" x="163" y="309" text-anchor="middle">inner sizes must match: 3 = 3</text><text class="m" x="763" y="294" text-anchor="middle">result keeps the outer sizes: 1 and 8</text><text class="code" x="450" y="344" text-anchor="middle">z₁ = 0.5·w₁₁ + 1.0·w₂₁ + 2.0·w₃₁ + b₁</text><text class="m" x="450" y="366" text-anchor="middle">Highlighted: what hidden neuron 1 uses. The other 7 neurons do the same with their own column, then ReLU is applied.</text>
+</svg>
