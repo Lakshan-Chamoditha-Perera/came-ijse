@@ -10,3 +10,4 @@
 mlflow.db
 mlruns/
 mlartifacts/
+mlflow_server.log

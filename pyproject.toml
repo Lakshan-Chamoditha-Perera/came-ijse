@@ -5,6 +5,7 @@ requires-python = ">=3.14"
 dependencies = [
     "ipykernel>=7.3.0",
     "matplotlib>=3.11.1",
+    "mlflow-skinny>=3.17.1",
     "numpy>=2.5.2",
     "pandas>=3.0.5",
     "pandas-stubs~=3.0.5",
