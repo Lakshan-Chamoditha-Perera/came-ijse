@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="540" viewBox="0 0 900 540" role="img" aria-labelledby="t d">
+<title id="t">How the Optuna study and the MLflow runs fit together</title>
+<desc id="d">Left: the Optuna study, using TPESampler with seed 42 and direction minimize, suggests hyperparameters for a trial. The objective function runs inside a nested child run and does four steps: log the 6 hyperparameters, train XGBClassifier on the 398 training rows, score it on the 85 validation rows, and log val_log_loss, val_accuracy and val_roc_auc. It returns the validation log loss to Optuna, which picks the next trial; this repeats 30 times. Right: each trial adds one child row to the parent run xgboost-optuna-study, for example trial-00 0.0317, trial-01 0.0873, trial-23 0.0208 (the best) and trial-29 0.0288. Section 8 adds best_ params, test_ metrics and the model to the parent run.</desc>
+<style>
+  svg {
+    --surface: #fcfcfb; --border: rgba(11,11,11,0.10); --line: #e1e0d9;
+    --ink-1: #0b0b0b; --ink-2: #52514e; --ink-3: #898781;
+    --s1: #2a78d6; --s1-wash: rgba(42,120,214,0.08); --s1-chip: rgba(42,120,214,0.14);
+    --s2: #eb6834; --s2-wash: rgba(235,104,52,0.08);
+    --s3: #1baf7a; --s3-wash: rgba(27,175,122,0.16);
+  }
+  @media (prefers-color-scheme: dark) {
+    svg {
+      --surface: #1a1a19; --border: rgba(255,255,255,0.10); --line: #33332f;
+      --ink-1: #ffffff; --ink-2: #c3c2b7; --ink-3: #898781;
+      --s1: #3987e5; --s1-wash: rgba(57,135,229,0.12); --s1-chip: rgba(57,135,229,0.24);
+      --s2: #d95926; --s2-wash: rgba(217,89,38,0.12);
+      --s3: #199e70; --s3-wash: rgba(25,158,112,0.28);
+    }
+  }
+  text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .bg { fill: var(--surface); stroke: var(--border); stroke-width: 1; }
+  .title { font-size: 19px; font-weight: 600; fill: var(--ink-1); }
+  .h { font-size: 13.5px; font-weight: 600; fill: var(--ink-1); }
+  .s { font-size: 13px; fill: var(--ink-2); }
+  .m { font-size: 11.5px; fill: var(--ink-3); }
+  .code { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 12px; fill: var(--ink-1); }
+  .stage { font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; }
+  .c1 { fill: var(--s1); } .c2 { fill: var(--s2); } .c3 { fill: var(--s3); }
+  .w1 { fill: var(--s1-wash); } .w2 { fill: var(--s2-wash); } .w3 { fill: var(--s3-wash); }
+  .card { stroke: var(--line); stroke-width: 1; }
+  .plain { fill: var(--surface); stroke: var(--line); stroke-width: 1; }
+  .box1 { fill: var(--s1-wash); stroke: var(--s1); stroke-width: 1.5; }
+  .box2 { fill: var(--s2-wash); stroke: var(--s2); stroke-width: 1.5; }
+  .outline1 { fill: none; stroke: var(--s1); stroke-width: 1.5; }
+  .chip { fill: var(--s1-chip); }
+  .best { fill: var(--s3-wash); stroke: var(--s3); stroke-width: 1.2; }
+  .lbl1 { font-size: 12.5px; font-weight: 700; fill: var(--s1); }
+  .lbl2 { font-size: 12.5px; font-weight: 700; fill: var(--s2); }
+  .lbl3 { font-size: 11.5px; font-weight: 700; fill: var(--s3); }
+  .badge circle { fill: var(--ink-2); }
+  .badge text { fill: var(--surface); font-size: 11px; font-weight: 700; }
+  .rule { stroke: var(--line); stroke-width: 1; }
+  .arrow { fill: none; stroke: var(--ink-3); stroke-width: 1.5; }
+  .arrowhead { fill: var(--ink-3); }
+  .loop2 { fill: none; stroke: var(--s2); stroke-width: 1.5; }
+  .head2 { fill: var(--s2); }
+</style>
+<rect class="bg" x="0.5" y="0.5" width="899" height="539" rx="12"/>
+<text class="title" x="32" y="44" text-anchor="start">One study = one parent run · one trial = one child run</text>
+<text class="s" x="32" y="67" text-anchor="start">Optuna repeats the loop 30 times. Each pass trains one model and logs it to MLflow as a nested run.</text>
+<rect class="box2" x="40" y="88" width="432" height="58" rx="10"/>
+<text class="lbl2" x="58" y="111" text-anchor="start">Optuna study  ·  TPESampler(seed=42)  ·  direction = minimize</text>
+<text class="s" x="58" y="133" text-anchor="start">picks the next hyperparameters, using the scores so far</text>
+<line class="arrow" x1="256" y1="146" x2="256" y2="176"/><path class="arrowhead" d="M256 182 l-4 -7 h8 z"/>
+<text class="m" x="266" y="169" text-anchor="start">trial.suggest_int(...) / trial.suggest_float(...)</text>
+<rect class="box1" x="40" y="182" width="432" height="236" rx="10"/>
+<text class="lbl1" x="58" y="205" text-anchor="start">objective(trial)  ·  inside a child run (nested=True)</text>
+<rect class="chip" x="56" y="218" width="400" height="40" rx="7"/>
+<g class="badge"><circle cx="76" cy="238" r="10"/><text x="76" y="242" text-anchor="middle">1</text></g>
+<text class="code" x="96" y="235" text-anchor="start">mlflow.log_params(params)</text>
+<text class="m" x="96" y="251" text-anchor="start">6 hyperparameters  →  child run › Parameters</text>
+<rect class="chip" x="56" y="266" width="400" height="40" rx="7"/>
+<g class="badge"><circle cx="76" cy="286" r="10"/><text x="76" y="290" text-anchor="middle">2</text></g>
+<text class="code" x="96" y="283" text-anchor="start">XGBClassifier(**params).fit(X_train, y_train)</text>
+<text class="m" x="96" y="299" text-anchor="start">train a model on the 398 training rows</text>
+<rect class="chip" x="56" y="314" width="400" height="40" rx="7"/>
+<g class="badge"><circle cx="76" cy="334" r="10"/><text x="76" y="338" text-anchor="middle">3</text></g>
+<text class="code" x="96" y="331" text-anchor="start">model.predict_proba(X_val)</text>
+<text class="m" x="96" y="347" text-anchor="start">score it on the 85 validation rows</text>
+<rect class="chip" x="56" y="362" width="400" height="40" rx="7"/>
+<g class="badge"><circle cx="76" cy="382" r="10"/><text x="76" y="386" text-anchor="middle">4</text></g>
+<text class="code" x="96" y="379" text-anchor="start">mlflow.log_metrics(metrics)</text>
+<text class="m" x="96" y="395" text-anchor="start">val_log_loss, val_accuracy, val_roc_auc  →  child run › Metrics</text>
+<path class="loop2" d="M256 418 V446 H22 V117 H32"/>
+<path class="head2" d="M39 117 l-7 -4 v8 z"/>
+<text class="lbl2" x="40" y="466" text-anchor="start">return val_log_loss  →  Optuna picks the next trial  (30 times)</text>
+<line class="arrow" x1="472" y1="300" x2="508" y2="300"/><path class="arrowhead" d="M514 300 l-7 -4 v8 z"/>
+<text class="m" x="493" y="290" text-anchor="middle">1 row</text>
+<rect class="outline1" x="514" y="88" width="354" height="378" rx="10"/>
+<text class="lbl1" x="530" y="111" text-anchor="start">Parent run: xgboost-optuna-study</text>
+<text class="m" x="530" y="129" text-anchor="start">tag  Training Info · params  n_trials, sampler</text>
+<text class="m" x="540" y="152" text-anchor="start">child run</text>
+<text class="m" x="852" y="152" text-anchor="end">val_log_loss</text>
+<line class="rule" x1="530" y1="159" x2="852" y2="159"/>
+<text class="code" x="540" y="181" text-anchor="start">trial-00</text>
+<text class="code" x="842" y="181" text-anchor="end">0.0317</text>
+<text class="code" x="540" y="206" text-anchor="start">trial-01</text>
+<text class="code" x="842" y="206" text-anchor="end">0.0873</text>
+<text class="code" x="540" y="231" text-anchor="start">trial-02</text>
+<text class="code" x="842" y="231" text-anchor="end">0.0700</text>
+<text class="code" x="540" y="256" text-anchor="start">⋮</text>
+<text class="code" x="842" y="256" text-anchor="end"></text>
+<text class="code" x="540" y="281" text-anchor="start">trial-22</text>
+<text class="code" x="842" y="281" text-anchor="end">0.0394</text>
+<rect class="best" x="530" y="291" width="322" height="22" rx="5"/>
+<text class="lbl3" x="690" y="306" text-anchor="middle">best</text>
+<text class="code" x="540" y="306" text-anchor="start">trial-23</text>
+<text class="code" x="842" y="306" text-anchor="end">0.0208</text>
+<text class="code" x="540" y="331" text-anchor="start">trial-24</text>
+<text class="code" x="842" y="331" text-anchor="end">0.0265</text>
+<text class="code" x="540" y="356" text-anchor="start">⋮</text>
+<text class="code" x="842" y="356" text-anchor="end"></text>
+<text class="code" x="540" y="381" text-anchor="start">trial-29</text>
+<text class="code" x="842" y="381" text-anchor="end">0.0288</text>
+<line class="rule" x1="530" y1="398" x2="852" y2="398"/>
+<text class="s" x="530" y="420" text-anchor="start">Section 8 then adds to this same run:</text>
+<text class="code" x="530" y="442" text-anchor="start">best_* params · test_* metrics · model/</text>
+<text class="s" x="32" y="506" text-anchor="start">Trials log only parameters and metrics, so they stay light. Only the final model (section 8) is saved as a model,</text>
+<text class="s" x="32" y="525" text-anchor="start">and that is the one section 10 registers.</text>
+</svg>

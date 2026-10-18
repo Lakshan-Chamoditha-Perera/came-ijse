@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="610" viewBox="0 0 900 610" role="img" aria-labelledby="t d">
+<title id="t">Day 18 Part 2 roadmap: tuning XGBoost with Optuna and MLflow</title>
+<desc id="d">Six stages. Stage 1, sections 1 to 4, MLflow: create the experiment with mlflow.set_experiment. Stage 2, section 5, scikit-learn: split 569 tumours into 398 training, 85 validation and 86 test rows. Stage 3, section 6, Optuna: define the objective function, which picks 6 hyperparameters, trains on the training set and returns the validation log loss. Stage 4, sections 7 to 8, Optuna: run the study for 30 trials; the best is trial 23 with validation log loss 0.0208; the final model scores test accuracy 0.9186. Stage 5, section 9, MLflow: view the results, one parent run holding 30 child runs. Stage 6, sections 10 to 11, MLflow: register the best model as breast-cancer-xgboost version 1 with the alias champion.</desc>
+<style>
+  svg {
+    --surface: #fcfcfb; --border: rgba(11,11,11,0.10); --line: #e1e0d9;
+    --ink-1: #0b0b0b; --ink-2: #52514e; --ink-3: #898781;
+    --s1: #2a78d6; --s1-wash: rgba(42,120,214,0.08); --s1-chip: rgba(42,120,214,0.14);
+    --s2: #eb6834; --s2-wash: rgba(235,104,52,0.08);
+    --s3: #1baf7a; --s3-wash: rgba(27,175,122,0.16);
+  }
+  @media (prefers-color-scheme: dark) {
+    svg {
+      --surface: #1a1a19; --border: rgba(255,255,255,0.10); --line: #33332f;
+      --ink-1: #ffffff; --ink-2: #c3c2b7; --ink-3: #898781;
+      --s1: #3987e5; --s1-wash: rgba(57,135,229,0.12); --s1-chip: rgba(57,135,229,0.24);
+      --s2: #d95926; --s2-wash: rgba(217,89,38,0.12);
+      --s3: #199e70; --s3-wash: rgba(25,158,112,0.28);
+    }
+  }
+  text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .bg { fill: var(--surface); stroke: var(--border); stroke-width: 1; }
+  .title { font-size: 19px; font-weight: 600; fill: var(--ink-1); }
+  .h { font-size: 13.5px; font-weight: 600; fill: var(--ink-1); }
+  .s { font-size: 13px; fill: var(--ink-2); }
+  .m { font-size: 11.5px; fill: var(--ink-3); }
+  .code { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 12px; fill: var(--ink-1); }
+  .stage { font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; }
+  .c1 { fill: var(--s1); } .c2 { fill: var(--s2); } .c3 { fill: var(--s3); }
+  .w1 { fill: var(--s1-wash); } .w2 { fill: var(--s2-wash); } .w3 { fill: var(--s3-wash); }
+  .card { stroke: var(--line); stroke-width: 1; }
+  .plain { fill: var(--surface); stroke: var(--line); stroke-width: 1; }
+  .box1 { fill: var(--s1-wash); stroke: var(--s1); stroke-width: 1.5; }
+  .box2 { fill: var(--s2-wash); stroke: var(--s2); stroke-width: 1.5; }
+  .outline1 { fill: none; stroke: var(--s1); stroke-width: 1.5; }
+  .chip { fill: var(--s1-chip); }
+  .best { fill: var(--s3-wash); stroke: var(--s3); stroke-width: 1.2; }
+  .lbl1 { font-size: 12.5px; font-weight: 700; fill: var(--s1); }
+  .lbl2 { font-size: 12.5px; font-weight: 700; fill: var(--s2); }
+  .lbl3 { font-size: 11.5px; font-weight: 700; fill: var(--s3); }
+  .badge circle { fill: var(--ink-2); }
+  .badge text { fill: var(--surface); font-size: 11px; font-weight: 700; }
+  .rule { stroke: var(--line); stroke-width: 1; }
+  .arrow { fill: none; stroke: var(--ink-3); stroke-width: 1.5; }
+  .arrowhead { fill: var(--ink-3); }
+  .loop2 { fill: none; stroke: var(--s2); stroke-width: 1.5; }
+  .head2 { fill: var(--s2); }
+</style>
+<rect class="bg" x="0.5" y="0.5" width="899" height="609" rx="12"/>
+<text class="title" x="32" y="44" text-anchor="start">Day 18 · Part 2 roadmap: tuning XGBoost with Optuna and MLflow</text>
+<text class="s" x="32" y="67" text-anchor="start">Six stages, from an empty experiment to a registered model. The colour shows which library does the work.</text>
+<circle class="c1" cx="38" cy="88" r="5"/><text class="m" x="48" y="92" text-anchor="start">MLflow</text>
+<circle class="c3" cx="116" cy="88" r="5"/><text class="m" x="126" y="92" text-anchor="start">scikit-learn</text>
+<circle class="c2" cx="222" cy="88" r="5"/><text class="m" x="232" y="92" text-anchor="start">Optuna + XGBoost</text>
+<rect class="card w1" x="32" y="112" width="836" height="64" rx="8"/>
+<rect class="c1" x="32" y="112" width="6" height="64" rx="3"/>
+<text class="stage c1" x="56" y="136" text-anchor="start">STAGE 1 · §1–4</text>
+<text class="h" x="56" y="158" text-anchor="start">Create the experiment</text>
+<text class="code" x="316" y="139" text-anchor="start">mlflow.set_experiment(&quot;Breast Cancer Classification XGBoost Tuning&quot;)</text>
+<text class="m" x="316" y="159" text-anchor="start">install, import, start the server, then create (or reuse) the experiment</text>
+<line class="arrow" x1="450" y1="176" x2="450" y2="188"/><path class="arrowhead" d="M450 194 l-4 -7 h8 z"/>
+<rect class="card w3" x="32" y="194" width="836" height="64" rx="8"/>
+<rect class="c3" x="32" y="194" width="6" height="64" rx="3"/>
+<text class="stage c3" x="56" y="218" text-anchor="start">STAGE 2 · §5</text>
+<text class="h" x="56" y="240" text-anchor="start">Prepare the data</text>
+<text class="code" x="316" y="221" text-anchor="start">train_test_split(...) twice  →  70 % / 15 % / 15 %</text>
+<text class="m" x="316" y="241" text-anchor="start">569 tumours, 30 features  →  398 train · 85 validation · 86 test</text>
+<line class="arrow" x1="450" y1="258" x2="450" y2="270"/><path class="arrowhead" d="M450 276 l-4 -7 h8 z"/>
+<rect class="card w2" x="32" y="276" width="836" height="64" rx="8"/>
+<rect class="c2" x="32" y="276" width="6" height="64" rx="3"/>
+<text class="stage c2" x="56" y="300" text-anchor="start">STAGE 3 · §6</text>
+<text class="h" x="56" y="322" text-anchor="start">Define the objective function</text>
+<text class="code" x="316" y="303" text-anchor="start">def objective(trial): ...  return val_log_loss</text>
+<text class="m" x="316" y="323" text-anchor="start">6 hyperparameters  →  train on the training set  →  score on the validation set</text>
+<line class="arrow" x1="450" y1="340" x2="450" y2="352"/><path class="arrowhead" d="M450 358 l-4 -7 h8 z"/>
+<rect class="card w2" x="32" y="358" width="836" height="64" rx="8"/>
+<rect class="c2" x="32" y="358" width="6" height="64" rx="3"/>
+<text class="stage c2" x="56" y="382" text-anchor="start">STAGE 4 · §7–8</text>
+<text class="h" x="56" y="404" text-anchor="start">Run the tuning study</text>
+<text class="code" x="316" y="385" text-anchor="start">study.optimize(objective, n_trials=30)</text>
+<text class="m" x="316" y="405" text-anchor="start">best: trial-23, val log loss 0.0208  →  final model, test accuracy 0.9186</text>
+<line class="arrow" x1="450" y1="422" x2="450" y2="434"/><path class="arrowhead" d="M450 440 l-4 -7 h8 z"/>
+<rect class="card w1" x="32" y="440" width="836" height="64" rx="8"/>
+<rect class="c1" x="32" y="440" width="6" height="64" rx="3"/>
+<text class="stage c1" x="56" y="464" text-anchor="start">STAGE 5 · §9</text>
+<text class="h" x="56" y="486" text-anchor="start">View the results in the MLflow UI</text>
+<text class="code" x="316" y="467" text-anchor="start">mlflow.search_runs(filter_string=&quot;tags.mlflow.parentRunId = &#x27;...&#x27;&quot;)</text>
+<text class="m" x="316" y="487" text-anchor="start">1 parent run holding 30 child runs: sort, compare and chart them</text>
+<line class="arrow" x1="450" y1="504" x2="450" y2="516"/><path class="arrowhead" d="M450 522 l-4 -7 h8 z"/>
+<rect class="card w1" x="32" y="522" width="836" height="64" rx="8"/>
+<rect class="c1" x="32" y="522" width="6" height="64" rx="3"/>
+<text class="stage c1" x="56" y="546" text-anchor="start">STAGE 6 · §10–11</text>
+<text class="h" x="56" y="568" text-anchor="start">Register the best model</text>
+<text class="code" x="316" y="549" text-anchor="start">mlflow.register_model(model_info.model_uri, &quot;breast-cancer-xgboost&quot;)</text>
+<text class="m" x="316" y="569" text-anchor="start">version 1 with the alias @champion  →  load it with models:/breast-cancer-xgboost@champion</text>
+</svg>
